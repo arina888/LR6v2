@@ -18,7 +18,8 @@ namespace WindowsFormsApp2
         {
             InitializeComponent();
         }
-
+        int a = 0;
+        double b = 0;
         private void button1_Click(object sender, EventArgs e)
         {
             string name = nameTextBox.Text;
@@ -43,12 +44,18 @@ namespace WindowsFormsApp2
                     return;
                 }
             }
-
+            
             Price priceWithDiscount = new Price(price, discount);
             Price priceWithoutDiscount = new Price(price, 0);
             Tariff tariff = new Tariff(name, priceWithDiscount, priceWithoutDiscount);
+            
             tariffs.Add(tariff);
             productsListBox.Items.Add(tariff.ToString());
+            if (discountCheckBox.Checked)
+            {
+                b += Convert.ToDouble(priceTextBox.Text) * (1 - Convert.ToDouble(discountTextBox.Text) / 100);
+                a++;
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -58,20 +65,9 @@ namespace WindowsFormsApp2
                 ShowErrorMessage("Список пуст");
                 return;
             }
-            int  a = 0;
-            double sum = 0;
             double rez = 0;
             Tariff cheapestProduct = tariffs[0];
-            for (int i = 0; i < tariffs.Count; i++)
-            {
-                sum += (double)(tariffs[i].PriceWithDiscount.AmountWithDiscount);
-                /*if (tariffs[i].PriceWithDiscount.AmountWithDiscount < cheapestProduct.PriceWithDiscount.AmountWithDiscount)
-                {
-                    cheapestProduct = tariffs[i];
-                }*/
-                a++;
-            }
-             rez = Math.Round(((double)sum / a),2);
+             rez = Math.Round((b/ a),2);
            
 
             MessageBox.Show(rez.ToString());
